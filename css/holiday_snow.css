@@ -1,0 +1,22 @@
+#holiday-snow-container {
+  overflow: hidden;
+}
+
+.snowflake {
+  position: absolute;
+  top: -10px;
+  color: #FFF;
+  text-shadow: 0 0 5px #000; /* Subtle shadow for visibility on light backgrounds */
+  animation-name: fall;
+  animation-timing-function: linear;
+  user-select: none;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(-10px) translateX(0px) rotate(0deg);
+  }
+  100% {
+    transform: translateY(100vh) translateX(50px) rotate(360deg);
+  }
+}

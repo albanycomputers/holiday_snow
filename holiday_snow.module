@@ -1,0 +1,94 @@
+<?php
+/**
+ * @file
+ * Main module file for Holiday Snow.
+ */
+
+/**
+ * Implements hook_config_info().
+ *
+ * Tells Backdrop that this module has a configuration file.
+ */
+function holiday_snow_config_info() {
+  $prefixes['holiday_snow.settings'] = array(
+    'label' => t('Holiday Snow Settings'),
+    'group' => t('User Interface'),
+  );
+  return $prefixes;
+}
+
+/**
+ * Implements hook_menu().
+ */
+function holiday_snow_menu() {
+  $items = array();
+
+  $items['admin/config/user-interface/holiday-snow'] = array(
+    'title' => 'Holiday Snow',
+    'description' => 'Configure the holiday snow effect settings.',
+    'page callback' => 'backdrop_get_form',
+    'page arguments' => array('holiday_snow_admin_form'),
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+/**
+ * Form callback: Admin settings form.
+ */
+function holiday_snow_admin_form($form, &$form_state) {
+  $config = config('holiday_snow.settings');
+
+  $form['#config'] = 'holiday_snow.settings';
+
+  $form['enabled'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable Snow Effect'),
+    '#default_value' => $config->get('enabled'),
+    '#description' => t('Toggle the snow effect on or off globally.'),
+  );
+
+  $form['z_index'] = array(
+    '#type' => 'number',
+    '#title' => t('Z-Index'),
+    '#default_value' => $config->get('z_index'),
+    '#description' => t('CSS Z-Index for the snow layer (default is 9999).'),
+    '#min' => 0,
+    '#step' => 1,
+  );
+
+  return system_settings_form($form);
+}
+
+/**
+ * Implements hook_preprocess_page().
+ *
+ * Adds the JS and CSS if the effect is enabled.
+ */
+function holiday_snow_preprocess_page(&$variables) {
+  // Do not show on admin paths to preserve backend usability.
+  if (path_is_admin(current_path())) {
+    return;
+  }
+
+  $config = config('holiday_snow.settings');
+
+  if ($config->get('enabled')) {
+    $path = backdrop_get_path('module', 'holiday_snow');
+
+    // Add CSS
+    backdrop_add_css($path . '/css/holiday_snow.css');
+
+    // Add JS with settings
+    $settings = array(
+      'holiday_snow' => array(
+        'zIndex' => $config->get('z_index'),
+      ),
+    );
+
+    backdrop_add_js($settings, 'setting');
+    backdrop_add_js($path . '/js/holiday_snow.js');
+  }
+}

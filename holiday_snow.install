@@ -1,0 +1,15 @@
+<?php
+/**
+ * @file
+ * Install, update and uninstall functions for the Holiday Snow module.
+ */
+
+/**
+ * Implements hook_uninstall().
+ *
+ * Cleans up configuration settings when the module is uninstalled.
+ */
+function holiday_snow_uninstall() {
+  // Delete the configuration file 'holiday_snow.settings.json'.
+  config('holiday_snow.settings')->delete();
+}

@@ -1,0 +1,8 @@
+name = Holiday Snow
+description = Adds a configurable festive snow effect to the site.
+backdrop = 1.x
+type = module
+package = User Interface
+configure = admin/config/user-interface/holiday-snow
+
+stylesheets[all][] = css/holiday_snow.css
