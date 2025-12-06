@@ -1,5 +1,5 @@
 # Holiday Snow
-**A fun javascript Holiday season snow fall effect.
+**A fun javascript Holiday season snow fall effect.**
 
 ### Requirements:
 
